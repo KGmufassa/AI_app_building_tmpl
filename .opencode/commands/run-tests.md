@@ -1,38 +1,66 @@
 ---
-description: Execute the project test suite and report results
-agent: build
+description: Execute the project test suite and ensure the correct test framework configuration exists.
+agent: plan
 subtask: true
 ---
 
-Run the project's test suite using the configured test runner.
+# Run Tests
 
-Detect the correct test framework based on the stack configuration.
+Execute the project's automated test suite.
 
-Possible test frameworks include:
+Before running tests, verify that the test framework configuration exists.
 
-- Jest
-- Vitest
-- Pytest
-- Mocha
-- Playwright
-- Cypress
+If configuration is missing, automatically initialize the test framework.
 
 ---
 
-# Inputs
+## Step 1 — Detect Framework
 
-docs/reference/stack.md  
-tests/ directory
+Inspect:
+
+- docs/reference/stack.md
+- package.json
+- project language
+
+Determine appropriate test framework.
+
+Examples:
+
+Node → Vitest or Jest  
+Python → Pytest  
+Go → Go test  
+React Native → Jest  
+Flutter → Flutter test
 
 ---
 
-# Execution
+## Step 2 — Ensure Test Framework Setup
+
+If required configuration files are missing, generate them automatically.
+
+Examples:
+
+Node:
+
+vitest.config.ts  
+tests/setup.ts  
+.env.test
+
+Python:
+
+pytest.ini  
+tests/conftest.py  
+.env.test
+
+---
+
+## Step 3 — Execute Tests
 
 Run the appropriate test command.
 
 Examples:
 
-Node.js:
+Node:
 
 npm test
 
@@ -40,34 +68,28 @@ Python:
 
 pytest
 
-Frontend:
+Go:
 
-npm run test
-
-End-to-end:
-
-npx playwright test
+go test ./...
 
 ---
 
-# Output
+## Step 4 — Capture Results
 
 Report:
 
-- number of tests executed
-- number passed
-- number failed
-- failing test names
+- total tests
+- passed tests
+- failed tests
+- failing test files
 - error messages
 
 ---
 
-# Completion
+## Output
 
-If all tests pass:
+Example:
 
-"All tests passed."
-
-If failures exist:
-
-"Test failures detected."
+Tests executed: 48  
+Passed: 46  
+Failed: 2
