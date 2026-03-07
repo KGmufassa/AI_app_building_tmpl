@@ -1,6 +1,6 @@
 ---
 description: Execute the project test suite and ensure the correct test framework configuration exists.
-agent: plan
+agent: build
 subtask: true
 ---
 
