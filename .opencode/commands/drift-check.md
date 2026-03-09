@@ -1,6 +1,6 @@
 ---
 description: Detect system drift between specifications and generated code.
-agent: plan
+agent: build
 subtask: true
 ---
 
