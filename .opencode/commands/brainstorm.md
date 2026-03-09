@@ -1,111 +1,89 @@
 ---
-description: Interactive product discovery and idea refinement
-agent: plan
+description: Interactive product discovery with tech stack exploration
+agent: build
 subtask: false
 ---
 
-# Brainstorm Command
+Use the command arguments as the initial brain dump.
 
-Use the text provided with the command as the initial brain dump.
-
-Brain dump input:
+Idea input:
 $ARGUMENTS
 
-If no arguments are provided, use the current terminal context as the idea.
+If no arguments are provided, use the current context as the idea.
 
 ---
 
-# Step 1 — Analyze the Idea
+Step 1 — Analyze Idea
 
-Extract the following from the input:
+Identify:
 
-- problem being solved
-- target user
-- proposed solution
-- assumed features
-- technical hints
-- industry domain
-
----
-
-# Step 2 — Research the Domain
-
-Identify common industry patterns for this type of application.
-
-Examples:
-
-- SaaS platforms
-- AI tools
-- marketplaces
-- mobile applications
-- internal enterprise tools
-
-Identify typical:
-
-- features
-- architecture patterns
-- integrations
-- risks
+• problem
+• target users
+• industry domain
+• initial features
+• possible platforms
 
 ---
 
-# Step 3 — Interactive Question Loop
+Step 2 — Interactive Questions
 
-Ask **one question at a time**.
+Ask one question at a time.
 
-After asking a question:
+Pause after each question and wait for the user response.
 
-STOP.
+Questions should refine:
 
-Wait for the user's response before continuing.
-
-Questions should cover:
-
-• product definition  
-• user definition  
-• feature set  
-• platform decisions  
-• integrations  
-• AI usage  
-• security considerations
-
-Continue asking questions until sufficient information is collected.
+• product definition
+• features
+• integrations
+• AI usage
+• platform targets
 
 ---
 
-# Step 4 — Challenge Layer
+Step 3 — Stack Exploration
 
-Once enough context exists, challenge the idea by questioning:
+Based on gathered information, suggest several suitable tech stack options.
 
-- assumptions
-- adoption barriers
-- technical feasibility
-- scalability risks
-- competitive alternatives
+Explain:
 
-Ask challenge questions one at a time.
+• why the stack fits
+• potential trade-offs
+• scalability implications
+
+Ask the user which stack direction they prefer.
 
 ---
 
-# Step 5 — Generate Brainstorm Document
+Step 4 — Challenge Layer
 
-When questioning is complete, generate:
+Challenge:
+
+• assumptions
+• adoption risks
+• technical feasibility
+• scaling challenges
+
+---
+
+Step 5 — Generate Brainstorm Document
+
+Create:
 
 docs/reference/brainstorm.md
 
 Include:
 
-Problem  
-Target Users  
-Industry Context  
-Product Concept  
-Core Features  
-Secondary Features  
-Platform  
-Data Sources  
-AI Requirements  
-Integrations  
-Risks  
+Problem
+Users
+Product Concept
+Feature Inventory
+Platform
+Data Sources
+Integrations
+AI Requirements
+Recommended Tech Stacks
+Risks
 Open Questions
 
 
