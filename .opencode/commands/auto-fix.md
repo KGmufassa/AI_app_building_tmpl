@@ -1,6 +1,6 @@
 ---
 description: Automatically repair detected system issues.
-agent: plan
+agent: build
 subtask: true
 ---
 
