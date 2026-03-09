@@ -1,6 +1,6 @@
 ---
 description: Generate a highly technical implementation-ready PRD from current context
-agent: plan
+agent: build
 subtask: true
 ---
 
