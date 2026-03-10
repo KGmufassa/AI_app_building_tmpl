@@ -1,11 +1,11 @@
 ---
-description: Orchestrate the full frontend generation pipeline
+description: Orchestrate the full frontend build pipeline
 agent: build
 ---
 
 # Frontend Build Orchestrator
 
-Execute the full frontend generation pipeline.
+Execute the complete frontend generation pipeline.
 
 ---
 
@@ -27,9 +27,21 @@ Run:
 
 # Step 3
 
+Run:
+
+/generate-ui-dependency-graph
+
+---
+
+# Step 4
+
 Run frontend implementation skill:
 
 build-frontend
+
+The build process must follow the generation order defined in:
+
+docs/reference/ui-dependency-graph.md
 
 ---
 
@@ -47,6 +59,6 @@ Verify:
 
 # Output
 
-Return:
+Return confirmation only:
 
 "Frontend build pipeline completed."
