@@ -1,92 +1,173 @@
 ---
-description: Generate the frontend architecture specification from design exports
+description: Convert HTML design sources into a frontend architecture specification
 agent: build
 subtask: true
 ---
 
 # Extract Design Specification
 
-Generate the **frontend architecture document** using the provided design exports and the frontend architecture template.
+Convert HTML prototype pages located in the `design/` directory into an implementable frontend architecture document.
 
-This command converts design artifacts into a structured UI architecture specification.
+The goal is to preserve the original HTML structure while extracting reusable components, layouts, and page routes.
 
 ---
 
 # Inputs
 
-The following design artifacts should exist in the repository:
+Scan the following directory recursively:
 
 design/
 
-Possible files include:
+Expected format:
 
-- design/figma/layout-tree.json
-- design/figma/components.json
-- design/figma/tokens.json
-- design/stitch/component-map.json
-- design/stitch/styles.json
+design/
+  source/
+    page-name/
+      page.html.txt
 
-If design files are missing, report the missing artifacts.
+Each `.txt` file contains raw HTML markup.
 
 ---
 
-# Template
+# Step 1 — Discover Pages
 
-Use the following template to generate the architecture file:
+Scan for HTML files.
+
+Examples:
+
+dashboard.html.txt  
+landing.html.txt  
+settings.html.txt
+
+Each HTML file represents a **page prototype**.
+
+---
+
+# Step 2 — Parse DOM Structure
+
+For each HTML page:
+
+Extract:
+
+- layout containers
+- navigation structures
+- sections
+- reusable UI blocks
+- form elements
+
+Preserve original DOM hierarchy.
+
+Do not redesign HTML.
+
+---
+
+# Step 3 — Detect Layouts
+
+Detect shared layout containers.
+
+Examples:
+
+Navbar  
+Sidebar  
+Footer
+
+Pages sharing these elements should reference a common layout.
+
+Example layouts:
+
+MainLayout  
+AuthLayout  
+MarketingLayout
+
+---
+
+# Step 4 — Detect Components
+
+Identify reusable components.
+
+Rules:
+
+Repeated DOM patterns become components.
+
+Examples:
+
+Card  
+Navbar  
+Sidebar  
+FeatureGrid  
+Button
+
+---
+
+# Step 5 — Extract Design Tokens
+
+If tokens exist in HTML (e.g. Tailwind config):
+
+Extract:
+
+- colors
+- fonts
+- spacing
+- dark mode strategy
+
+---
+
+# Step 6 — Determine Framework
+
+Read:
+
+docs/reference/stack.md
+
+Adapt architecture for the defined frontend framework.
+
+Examples:
+
+React  
+Next.js  
+Vue  
+React Native
+
+---
+
+# Step 7 — Generate Architecture
+
+Create the architecture specification using:
 
 @docs/templates/FRONTEND_ARCHITECTURE_TEMPLATE.md
+
+Include:
+
+Pages  
+Layouts  
+Components  
+Design tokens  
+File structure
 
 ---
 
 # Output
 
-Generate the file:
+Write the architecture document to:
 
 docs/reference/frontend-architecture.md
 
----
-
-# Generation Rules
-
-When generating the frontend architecture:
-
-1. Extract the page structure from the design layout tree.
-2. Extract the component hierarchy from design components.
-3. Extract design tokens (colors, spacing, typography).
-4. Identify layouts such as AuthLayout or MainLayout.
-5. Define reusable components and UI modules.
-6. Define hooks and state management layers.
-
-Ensure the output contains:
-
-- framework configuration
-- page map
-- component architecture
-- layouts
-- hooks
-- API client layer
-- design tokens
-- UI data flow
+Overwrite if exists.
 
 ---
 
-# Validation
+# Completion Output
 
-Before completing:
+Return confirmation only:
 
-- ensure pages map to design layouts
-- ensure components are modular
-- ensure tokens are referenced
-- ensure file structure is defined
+"Frontend architecture generated."
 
 ---
 
-# Completion
+# Update Project State
 
-Write the generated architecture document to:
+Update:
 
-docs/reference/frontend-architecture.md
+docs/reference/project-state.md
 
-Output confirmation only:
-
-"Frontend architecture successfully generated."
+Phase: Frontend Architecture Generated  
+Last Updated: [CURRENT_TIMESTAMP]
