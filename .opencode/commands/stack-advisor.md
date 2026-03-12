@@ -6,6 +6,7 @@ subtask: true
 
 Reference:
 
+@docs/reference/brainstorm-prd-draft.md
 @docs/reference/frontend-architecture.md
 
 ---
