@@ -236,5 +236,100 @@ Database models
 API routing structure  
 
 Example structure:
+src/
+
+controllers/
+services/
+repositories/
+models/
+middleware/
+routes/
+config/
+
+
+---
+
+# Step 6 — Define API Contracts
+
+Derive API endpoints required by the frontend.
+
+Examples:
+
+GET /api/projects  
+POST /api/projects  
+GET /api/users  
+
+Map these endpoints to frontend hooks discovered in the frontend architecture.
+
+---
+
+# Step 7 — Produce Stack Architecture Document
+
+Output structured document:
+
+# FULL STACK ARCHITECTURE
+
+## Frontend Stack
+
+Framework  
+Styling  
+Routing  
+State Management  
+
+---
+
+## Backend Stack
+
+Runtime  
+Framework  
+API Style  
+Database  
+ORM  
+Authentication  
+
+---
+
+## Backend Architecture
+
+Controllers  
+Services  
+Repositories  
+Models  
+
+---
+
+## API Contract
+
+Define endpoints required by the frontend.
+
+---
+
+## Deployment Strategy
+
+Describe infrastructure.
+
+---
+
+# Step 8 — Save Artifacts
+
+Save stack definition:
+
+docs/reference/stack.md
+
+Save backend architecture:
+
+docs/reference/backend-architecture.md
+
+Create directories if missing.
+
+Overwrite existing files.
+
+---
+
+# Completion Output
+
+Return confirmation only:
+
+"Stack confirmed and backend architecture generated."
 
 ---
