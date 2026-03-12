@@ -1,12 +1,16 @@
-AI Application Development Pipeline
+# AI Application Development Pipeline
 
-This document describes the full autonomous development pipeline used by the AI project system.
+This document describes the **full autonomous development pipeline** used by the AI project system.
 
-The system converts a raw idea → fully structured implementation plan using staged architecture generation.
+The system converts a **raw idea → fully structured implementation plan** using staged architecture generation.
 
-Each stage produces artifacts stored in docs/reference/, which are used by subsequent commands.
+Each stage produces **artifacts stored in `docs/reference/`**, which are used by subsequent commands.
 
-Pipeline Overview
+---
+
+# Pipeline Overview
+
+```
 Brainstorm
 ↓
 PRD Draft
@@ -30,199 +34,236 @@ Finalize PRD
 Generate Plan
 ↓
 Implementation Phase
+```
 
-Each step progressively reduces ambiguity and adds technical structure.
+Each step progressively **reduces ambiguity** and **adds technical structure**.
 
-1. Brainstorm
+---
+
+# 1. Brainstorm
 
 Command:
 
+```
 /brainstorm
-Purpose
+```
 
-Transform a raw brain dump of ideas into a structured concept draft.
+## Purpose
 
-This stage is focused on clarifying the product idea.
+Transform a **raw brain dump of ideas** into a **structured concept draft**.
 
-Inputs
+This stage focuses on **clarifying the product idea**.
+
+## Inputs
 
 Either:
 
+```
 context window text
+```
 
 or
 
+```
 /brainstorm <file>
+```
 
 Example:
 
+```
 /brainstorm idea.txt
-What the Command Does
+```
 
-The command:
+## What the Command Does
 
-Reads the user brain dump
+1. Reads the user brain dump
+2. Extracts:
+   - product idea
+   - user goals
+   - features
+   - application theme
+3. Researches industry patterns
+4. Asks clarifying questions
+5. Challenges assumptions
+6. Suggests potential tech stacks
 
-Extracts:
+## Question Layers
 
-product idea
-
-user goals
-
-features
-
-application theme
-
-Researches industry patterns
-
-Asks clarifying questions
-
-Challenges assumptions
-
-Suggests potential tech stacks
-
-Question Layers
-
-The system asks questions in three layers.
-
-Product Questions
+### Product Questions
 
 Example:
 
+```
 Who is the primary user?
 What problem does the app solve?
 What makes this product unique?
-Feature Questions
+```
+
+### Feature Questions
 
 Example:
 
+```
 What are the core features required for MVP?
 Which features require backend services?
 Which features are UI-only?
-Architecture Questions
+```
+
+### Architecture Questions
 
 Example:
 
+```
 Will the app require real-time updates?
 Will authentication be required?
 Does the system require background workers?
-Output Artifact
+```
+
+## Output Artifact
+
+```
 docs/reference/prd-draft.md
+```
 
-This is a draft PRD used for design generation.
+This is a **draft PRD used for design generation**.
 
-2. UI Prompt Builder
+---
+
+# 2. UI Prompt Builder
 
 Command:
 
+```
 /ui-prompt-builder
-Purpose
+```
 
-Generate a prompt for the Google Stitch UI builder based on the PRD draft.
+## Purpose
 
-This allows automatic generation of high quality UI layouts.
+Generate a **prompt for the Google Stitch UI builder** based on the PRD draft.
 
-Inputs
+## Inputs
+
+```
 docs/reference/prd-draft.md
-What the Command Does
+```
 
-The system:
+## What the Command Does
 
-Extracts features from the PRD draft
+1. Extracts features from the PRD draft
+2. Derives possible UI pages
+3. Identifies UX patterns
+4. Asks UI clarifying questions
+5. Builds a structured UI prompt
 
-Derives possible UI pages
+## Output
 
-Identifies UX patterns
+A prompt usable in **Google Stitch**.
 
-Asks UI clarifying questions
+---
 
-Builds a structured UI prompt
+# 3. UI Design Generation (Google Stitch)
 
-Output
-
-A prompt that can be pasted into:
-
-Google Stitch
-3. UI Design Generation (Google Stitch)
-
-This stage is manual.
+This stage is **manual**.
 
 The user submits the generated prompt to:
 
+```
 Google Stitch
-Output
+```
 
-The UI builder generates HTML layouts.
+## Output
 
-The HTML files are saved inside:
+The UI builder generates HTML layouts saved in:
 
+```
 design/
+```
 
 Example structure:
 
+```
 design/
+  stitch/
+    landing-page.txt
+    dashboard-page.txt
+    project-page.txt
+```
 
-stitch/
-  landing-page.txt
-  dashboard-page.txt
-  project-page.txt
+These files contain **raw HTML source code**.
 
-The files contain raw HTML source code.
+---
 
-4. Extract Design Spec
+# 4. Extract Design Spec
 
 Command:
 
+```
 /extract-design-spec
-Purpose
+```
 
-Convert HTML design code into a structured UI architecture specification.
+## Purpose
 
-Inputs
+Convert **HTML design code** into a **structured UI architecture specification**.
+
+## Inputs
+
+```
 design/
+```
 
 HTML source files.
 
-What the Command Does
+## What the Command Does
 
-The command analyzes:
+Analyzes:
 
-HTML structure
+- HTML structure
+- Tailwind styles
+- components
+- layout containers
 
-Tailwind styles
+Extracts:
 
-components
-
-layout containers
-
-It extracts:
-
+```
 pages
 components
 layouts
 design tokens
 navigation
-Output
+```
+
+## Output
+
+```
 docs/reference/frontend-design-spec.md
+```
 
-This becomes the technical summary of the UI system.
+---
 
-5. Generate Frontend Architecture
+# 5. Generate Frontend Architecture
 
 Command:
 
+```
 /generate-frontend-architecture
-Purpose
+```
 
-Convert the design specification into a formal frontend architecture document.
+## Purpose
 
-Inputs
+Convert the design specification into a **formal frontend architecture document**.
+
+## Inputs
+
+```
 docs/reference/frontend-design-spec.md
 docs/reference/prd-draft.md
-What the Command Generates
+```
 
-The architecture defines:
+## What the Command Generates
 
+Defines:
+
+```
 framework
 routing system
 layout architecture
@@ -231,52 +272,70 @@ state management
 API consumption model
 UI dependency graph
 page wiring graph
-Output
+```
+
+## Output
+
+```
 docs/reference/frontend-architecture.md
+```
 
-This document becomes the source of truth for frontend implementation.
+---
 
-6. Stack Advisor
+# 6. Stack Advisor
 
 Command:
 
+```
 /stack-advisor
-Purpose
+```
 
-Determine the complete technology stack.
+## Purpose
 
-Inputs
+Determine the **complete technology stack**.
+
+## Inputs
+
+```
 docs/reference/frontend-architecture.md
 docs/reference/prd-draft.md
-Process
+```
 
-The system:
+## Process
 
-Detects frontend stack
+1. Detects frontend stack
+2. Asks backend stack questions
+3. Determines:
 
-Asks questions about backend stack
-
-Determines:
-
+```
 backend framework
 database
 ORM
 authentication
 deployment target
 testing framework
-Outputs
+```
+
+## Outputs
+
+```
 docs/reference/stack.md
 docs/reference/backend-architecture.md
+```
 
-7. Backend Architecture
+---
+
+# 7. Backend Architecture
 
 Generated during stack advisor.
 
-Purpose
+## Purpose
 
-Define the backend system structure.
+Define backend system structure.
 
-Architecture Includes
+## Architecture Includes
+
+```
 controllers
 services
 repositories
@@ -284,9 +343,12 @@ models
 routes
 middleware
 configuration
-Example Folder Structure
-src/
+```
 
+Example structure:
+
+```
+src/
 controllers/
 services/
 repositories/
@@ -294,28 +356,37 @@ models/
 routes/
 middleware/
 config/
-Output
+```
+
+## Output
+
+```
 docs/reference/backend-architecture.md
-8. Generate Stack Guidelines
+```
+
+---
+
+# 8. Generate Stack Guidelines
 
 Command:
 
+```
 /generate-stack-guidelines
-Purpose
+```
 
-Retrieve official best practices for the confirmed tech stack.
+## Purpose
 
-Uses:
+Retrieve **official best practices** using **Context7 MCP**.
 
-Context7 MCP
-Example Sources
-Next.js documentation
-FastAPI documentation
-PostgreSQL best practices
-Prisma patterns
-Output
+## Output
+
+```
 docs/reference/stack-guidelines.md
-Contents
+```
+
+Contents include:
+
+```
 project structure
 service layer patterns
 configuration patterns
@@ -323,25 +394,41 @@ security practices
 performance patterns
 testing practices
 deployment patterns
+```
 
-9. Finalize PRD
+---
+
+# 9. Finalize PRD
 
 Command:
 
+```
 /finalize-prd
-Purpose
+```
 
-Create the final authoritative PRD.
+## Purpose
 
-Inputs
+Create the **final authoritative PRD**.
+
+## Inputs
+
+```
 docs/reference/prd-draft.md
 docs/reference/frontend-architecture.md
 docs/reference/backend-architecture.md
 docs/reference/stack.md
 docs/reference/frontend-design-spec.md
-Output
+```
+
+## Output
+
+```
 docs/reference/prd.md
-Contents
+```
+
+Includes:
+
+```
 product vision
 feature list
 functional requirements
@@ -351,101 +438,156 @@ UI structure
 tech stack
 MVP scope
 non-functional requirements
+```
 
-10. Generate Plan
+---
+
+# 10. Generate Plan
 
 Command:
 
+```
 /generate-plan
-Purpose
+```
 
-Generate the technical build plan.
+## Purpose
 
-This plan describes exactly how the application should be implemented.
+Generate the **technical build plan**.
 
-Inputs
+## Inputs
+
+```
 frontend-architecture.md
 backend-architecture.md
 stack.md
 prd.md
 stack-guidelines.md
-What the Command Generates
-Build Plan
+```
+
+## Output
+
+```
 docs/reference/plan.md
+```
 
-Contains:
+### Infrastructure Phase
 
-Infrastructure Phase
+```
 environment setup
 database initialization
 container configuration
-Core Module Setup
+```
+
+### Core Module Setup
+
+```
 authentication
 logging
 configuration
-Backend Implementation
+```
+
+### Backend Implementation
+
+```
 controllers
 services
 repositories
 models
-Frontend Implementation
+```
+
+### Frontend Implementation
+
+```
 layouts
 components
 hooks
 pages
-Feature-by-Feature Breakdown
+```
+
+### Feature-by-Feature Breakdown
 
 Each feature defines:
 
+```
 frontend components
 backend services
 API endpoints
 data models
-Cross-Cutting Concerns
+```
+
+### Cross-Cutting Concerns
+
+```
 authentication
 authorization
 logging
 error handling
-Performance Strategy
+```
+
+### Performance Strategy
+
+```
 database indexing
 API caching
 lazy loading
-Security Enforcement
+```
+
+### Security Enforcement
+
+```
 input validation
 auth guards
 rate limiting
-Validation Checklist
+```
+
+### Validation Checklist
 
 Ensures:
 
+```
 features implemented
 APIs wired
 tests written
-Deployment Strategy
+```
+
+### Deployment Strategy
+
+```
 CI/CD pipeline
 database migrations
 environment configuration
-11. Architecture Rules
+```
+
+---
+
+# Architecture Rules
 
 Generated alongside the plan.
 
-Output
+Output:
+
+```
 docs/reference/architecture-rules.md
-Purpose
+```
 
-Prevent architectural drift during implementation.
+Purpose:
 
-Example Rules
+Prevent architectural drift.
+
+Example rules:
+
+```
 controllers cannot access database directly
 repositories handle database queries
 services contain business logic
 UI cannot call database directly
-Final Result of the Pipeline
+```
 
-After the pipeline completes, the system produces a complete engineering specification.
+---
 
-Artifacts created:
+# Final Artifacts Generated
 
+```
 docs/reference/
 
 prd-draft.md
@@ -457,8 +599,44 @@ stack-guidelines.md
 prd.md
 plan.md
 architecture-rules.md
+```
 
-------
+---
+
+# Next Stage: Implementation Pipeline
+
+Example commands:
+
+```
+scaffold-project
+build-database
+build-backend
+build-frontend
+write-tests
+run-tests
+qa-review
+```
+
+---
+
+# Key Benefit of This System
+
+The pipeline ensures:
+
+```
+ideas → architecture → implementation plan
+```
+
+This reduces:
+
+```
+architecture mistakes
+feature ambiguity
+stack incompatibilities
+technical debt
+```
+
+
 
 scaffold-project
 build-database
