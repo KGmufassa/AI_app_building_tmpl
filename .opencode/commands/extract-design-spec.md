@@ -1,157 +1,334 @@
 ---
-description: Convert HTML design sources into a frontend architecture specification
+description: Reverse engineer the exported Google Stitch UI codebase and generate a technical frontend architecture specification
 agent: build
 subtask: true
 ---
 
-# Extract Design Specification
-
-Convert HTML prototype pages located in the `design/` directory into an implementable frontend architecture document.
-
-The goal is to preserve the original HTML structure while extracting reusable components, layouts, and page routes.
-
----
-
-# Inputs
-
-Scan the following directory recursively:
+Reference:
 
 design/
 
-Expected format:
-
-design/
-  source/
-    page-name/
-      page.html.txt
-
-Each `.txt` file contains raw HTML markup.
+@docs/templates/FRONTEND_ARCHITECTURE_TEMPLATE.md
 
 ---
 
-# Step 1 — Discover Pages
+# Objective
 
-Scan for HTML files.
+Analyze the UI code exported from **Google Stitch** and generate a **technical frontend architecture specification**.
+
+This command must perform a **structural analysis of the HTML codebase** and derive:
+
+• page-level architecture  
+• layout hierarchy  
+• reusable UI modules  
+• component boundaries  
+• styling architecture  
+• navigation topology  
+• UI dependency graph  
+
+The goal is to transform raw UI markup into a **clear architectural representation of the frontend system**.
+
+---
+
+# Step 1 — Locate Design Codebase
+
+Scan the repository directory:
+
+design/
+
+Recursively detect HTML source files.
 
 Examples:
 
-dashboard.html.txt  
 landing.html.txt  
-settings.html.txt
+dashboard.html.txt  
+settings.html.txt  
 
-Each HTML file represents a **page prototype**.
+Each file contains HTML markup exported from Google Stitch.
+
+If no HTML sources exist:
+
+Abort with:
+
+"No Stitch design sources found in design directory."
 
 ---
 
 # Step 2 — Parse DOM Structure
 
-For each HTML page:
+For each HTML file:
 
-Extract:
+Construct a **DOM tree representation**.
 
-- layout containers
-- navigation structures
-- sections
-- reusable UI blocks
-- form elements
+Analyze structural nodes including:
 
-Preserve original DOM hierarchy.
+• `<header>`  
+• `<nav>`  
+• `<main>`  
+• `<section>`  
+• `<aside>`  
+• `<footer>`  
 
-Do not redesign HTML.
+Extract hierarchical structure:
+
+
+Page Root
+→ Layout Containers
+→ Sections
+→ Nested UI Blocks
+
+
+Preserve DOM hierarchy when identifying architectural boundaries.
 
 ---
 
-# Step 3 — Detect Layouts
+# Step 3 — Identify Layout Containers
 
-Detect shared layout containers.
+Detect layout scaffolding elements responsible for global UI structure.
+
+Common indicators:
+
+• navigation containers  
+• persistent sidebars  
+• headers  
+• footers  
+• global wrappers  
+
+Derive layout modules.
 
 Examples:
 
-Navbar  
-Sidebar  
-Footer
-
-Pages sharing these elements should reference a common layout.
-
-Example layouts:
-
-MainLayout  
+MarketingLayout  
+AppLayout  
 AuthLayout  
-MarketingLayout
+
+Layout responsibilities must include:
+
+• global navigation  
+• layout slots for page content  
+• responsive container behavior  
 
 ---
 
-# Step 4 — Detect Components
+# Step 4 — Identify UI Modules
 
-Identify reusable components.
-
-Rules:
-
-Repeated DOM patterns become components.
+Analyze repeated DOM patterns to identify reusable modules.
 
 Examples:
 
-Card  
+Card components  
+Form components  
+Navigation elements  
+Buttons  
+Data tables  
+
+Define module boundaries based on:
+
+• repeated markup structures  
+• logical UI grouping  
+• component composition  
+
+Do not alter DOM semantics during extraction.
+
+---
+
+# Step 5 — Detect Styling Architecture
+
+Analyze styling framework usage.
+
+Detect indicators for:
+
+TailwindCSS  
+Bootstrap  
+Custom CSS  
+
+Example detection signals:
+
+
+tailwindcdn
+class="flex grid ..."
+style tags
+CSS variables
+
+
+Extract design tokens if available:
+
+colors  
+typography  
+spacing scale  
+border radius  
+
+---
+
+# Step 6 — Page-Level Architecture
+
+Each HTML file represents a **page-level module**.
+
+Derive:
+
+Page name  
+Route path  
+Page purpose  
+
+Example:
+
+landing.html → `/`  
+dashboard.html → `/dashboard`  
+settings.html → `/settings`
+
+Document page responsibilities.
+
+---
+
+# Step 7 — Navigation Topology
+
+Analyze navigation structures.
+
+Detect:
+
+• navbar link structures  
+• sidebar navigation menus  
+• internal routing references  
+
+Construct navigation graph describing how pages connect.
+
+Example:
+
+
+Landing
+→ Login
+→ Dashboard
+→ Settings
+
+
+---
+
+# Step 8 — Component Boundary Detection
+
+Define component boundaries using the following heuristics:
+
+Repeated DOM segments  
+Isolated UI functionality  
+Encapsulated styling blocks  
+
+Examples:
+
 Navbar  
 Sidebar  
+HeroSection  
 FeatureGrid  
-Button
+FeatureCard  
+
+Record parent-child relationships.
 
 ---
 
-# Step 5 — Extract Design Tokens
+# Step 9 — Generate Component Graph
 
-If tokens exist in HTML (e.g. Tailwind config):
+Produce a hierarchical UI component graph.
 
-Extract:
+Example:
 
-- colors
-- fonts
-- spacing
-- dark mode strategy
 
----
+LandingPage
+└ MarketingLayout
+├ Navbar
+├ HeroSection
+├ FeatureGrid
+│ └ FeatureCard
+└ Footer
 
-# Step 6 — Determine Framework
 
-Read:
-
-docs/reference/stack.md
-
-Adapt architecture for the defined frontend framework.
-
-Examples:
-
-React  
-Next.js  
-Vue  
-React Native
+This graph must represent **composition relationships between UI modules**.
 
 ---
 
-# Step 7 — Generate Architecture
+# Step 10 — Generate Page Wiring Graph
 
-Create the architecture specification using:
+Define page-level wiring relationships.
+
+Each page must include:
+
+Route  
+Layout  
+Components  
+Navigation relationships  
+
+Example:
+
+
+DashboardPage
+Route: /dashboard
+
+Layout
+AppLayout
+
+Components
+Sidebar
+DashboardHeader
+ProjectList
+└ ProjectCard
+
+
+---
+
+# Step 11 — Generate UI Dependency Graph
+
+Create a dependency graph describing the **correct generation order of UI modules**.
+
+Order should follow:
+
+Layouts  
+Shared Components  
+Nested Components  
+Pages  
+
+Example:
+
+
+AppLayout
+Navbar
+Sidebar
+ProjectCard
+ProjectList
+DashboardHeader
+DashboardPage
+
+
+Resolve dependency relationships using topological ordering.
+
+---
+
+# Step 12 — Produce Architecture Document
+
+Generate the frontend architecture document using:
 
 @docs/templates/FRONTEND_ARCHITECTURE_TEMPLATE.md
 
-Include:
+Populate sections including:
 
-Pages  
-Layouts  
-Components  
-Design tokens  
-File structure
+Frontend framework detection  
+Design system  
+Page map  
+Layout architecture  
+Component architecture  
+Component graph  
+Page wiring graph  
+UI dependency graph  
+
+The document should read as a **technical architecture specification**, not a visual design description.
 
 ---
 
-# Output
+# Step 13 — Save Architecture Artifact
 
-Write the architecture document to:
+Write the generated architecture document to:
 
 docs/reference/frontend-architecture.md
 
-Overwrite if exists.
+Create directory if missing.
+
+Overwrite existing file.
 
 ---
 
@@ -159,7 +336,7 @@ Overwrite if exists.
 
 Return confirmation only:
 
-"Frontend architecture generated."
+"Frontend architecture generated from Stitch UI codebase."
 
 ---
 
