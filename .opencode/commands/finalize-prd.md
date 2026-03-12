@@ -1,6 +1,6 @@
 ---
 description: Generate the finalized Product Requirements Document from architecture, stack decisions, and design specifications
-agent: plan
+agent: build
 subtask: true
 ---
 
