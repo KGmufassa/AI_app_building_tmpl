@@ -1,128 +1,242 @@
 ---
-description: Retrieve stack-specific best practices using Context7 MCP and generate structured stack guidance
+description: Confirm frontend stack and derive backend architecture aligned with the frontend system
 agent: plan
 subtask: true
 ---
 
 Reference:
 
+@docs/reference/frontend-architecture.md
+@docs/reference/brainstorm-prd-draft.md
 @docs/reference/app-classification.md
 
 ---
 
 # Objective
 
-Determine the application's primary tech stack and retrieve official best practices using Context7 MCP.
+Determine and finalize the full **application technology stack**.
 
-If tech stack is not defined in classification:
-- Abort and instruct user to define stack in PRD or classification.
+The command must:
 
----
+1. Confirm the frontend stack derived from the frontend architecture.
+2. Ask clarifying questions to determine the backend stack.
+3. Validate compatibility between frontend and backend systems.
+4. Produce a backend architecture aligned with the frontend system.
 
-# Step 1: Detect Stack
-
-Extract from classification or PRD:
-
-- Frontend framework
-- Backend framework
-- Database
-- ORM
-- Deployment target
-- Testing framework (if defined)
+The result should be a **cohesive full-stack architecture**.
 
 ---
 
-# Step 2: Use Context7 MCP
+# Step 1 — Read Frontend Architecture
 
-For each detected technology:
+Load:
 
-Query Context7 MCP for:
+docs/reference/frontend-architecture.md
 
-- Recommended folder structure
-- Service layer patterns
-- Dependency injection practices
-- Environment configuration patterns
-- Error handling patterns
-- Testing best practices
-- Production deployment best practices
-- Performance recommendations
-- Security considerations
+Extract:
 
-Important:
-- Retrieve only official and stable patterns.
-- Ignore experimental features.
-- Focus on current major version best practices.
-- Summarize findings concisely.
+Frontend framework  
+Routing system  
+State management approach  
+UI architecture style  
+API consumption pattern  
 
-Do NOT store raw MCP output.
-Summarize into structured guidance.
+Examples:
+
+React + Tailwind  
+Next.js App Router  
+REST data fetching hooks  
 
 ---
 
-# Step 3: Produce Structured Output
+# Step 2 — Confirm Frontend Stack
 
-Output format:
+Display detected frontend stack.
 
-# STACK BEST PRACTICES
+Example:
 
-## Stack Overview
+Frontend Framework  
+Next.js
 
-- Frontend:
-- Backend:
-- Database:
-- ORM:
-- Deployment Target:
+Styling  
+TailwindCSS
 
----
+State Management  
+React Hooks
 
-## Recommended Folder Structure
+Routing  
+Next.js App Router
 
----
+Ask user to confirm:
 
-## Service & Layering Patterns
+Is the detected frontend stack correct?
 
----
-
-## Configuration Management
+If not, request corrections.
 
 ---
 
-## Database Best Practices
+# Step 3 — Backend Architecture Questionnaire
+
+Generate a backend clarification questionnaire.
+
+Ask questions **sequentially without pauses** so the user can answer them together.
 
 ---
 
-## API Patterns
+## Backend Runtime
+
+Which runtime environment should power the backend?
+
+Examples:
+
+Node.js  
+Python  
+Go  
+Java  
 
 ---
 
-## Testing Strategy
+## Backend Framework
+
+Which backend framework should be used?
+
+Examples:
+
+Express  
+NestJS  
+FastAPI  
+Django  
+Spring Boot  
 
 ---
 
-## Deployment & DevOps
+## API Architecture
+
+Which API style should the backend follow?
+
+Examples:
+
+REST  
+GraphQL  
+tRPC  
 
 ---
 
-## Performance Considerations
+## Database
+
+Which database should be used?
+
+Examples:
+
+PostgreSQL  
+MySQL  
+MongoDB  
+SQLite  
 
 ---
 
-## Security Considerations
+## ORM / Query Layer
+
+Which database abstraction layer should be used?
+
+Examples:
+
+Prisma  
+Drizzle  
+SQLAlchemy  
+TypeORM  
 
 ---
 
-# Step 4: Save Artifact
+## Authentication Strategy
 
-After generating:
+How should authentication be implemented?
 
-1. Save file to:
+Examples:
 
-docs/reference/stack-best-practices.md
+JWT  
+Session cookies  
+OAuth providers  
+Auth0 / Clerk  
 
-2. Create directory if missing.
-3. Overwrite existing file.
-4. Output confirmation only:
+---
 
-"Stack best practices saved to docs/reference/stack-best-practices.md"
+## File Storage
+
+Will the application require file storage?
+
+Examples:
+
+S3  
+Cloud storage  
+Local storage  
+
+---
+
+## Background Jobs
+
+Does the application require background job processing?
+
+Examples:
+
+Queue workers  
+Task schedulers  
+Async workers  
+
+---
+
+## Deployment Target
+
+Where will the backend be deployed?
+
+Examples:
+
+AWS  
+Vercel serverless  
+Render  
+Fly.io  
+Docker containers  
+
+---
+
+## Testing Framework
+
+Which backend testing framework should be used?
+
+Examples:
+
+Jest  
+Vitest  
+Pytest  
+
+---
+
+# Step 4 — Validate Stack Compatibility
+
+Ensure the backend stack is compatible with the frontend.
+
+Examples:
+
+Next.js frontend → REST or GraphQL API expected  
+React Native → mobile-friendly API responses  
+Serverless deployment → stateless backend  
+
+Flag incompatibilities and suggest corrections.
+
+---
+
+# Step 5 — Generate Backend Architecture
+
+Create a backend architecture aligned with the frontend system.
+
+The architecture must include:
+
+Service layer  
+Controller layer  
+Repository layer  
+Database models  
+API routing structure  
+
+Example structure:
 
 ---
