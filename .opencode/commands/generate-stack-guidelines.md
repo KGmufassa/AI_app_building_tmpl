@@ -1,6 +1,6 @@
 ---
 description: Generate stack-specific engineering guidelines using Context7 MCP
-agent: plan
+agent: build
 subtask: true
 ---
 
