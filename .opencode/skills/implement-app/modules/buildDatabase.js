@@ -1,44 +1,56 @@
 import fs from "fs"
 import path from "path"
 
-const BACKEND_ARCH_PATH = "docs/reference/backend-architecture.md"
-const OUTPUT_DIR = "database"
-const MIGRATION_DIR = "database/migrations"
+const ARCH_PATH = "docs/reference/backend-architecture.md"
 
 function loadArchitecture() {
 
-  if (!fs.existsSync(BACKEND_ARCH_PATH)) {
-    throw new Error("Missing backend architecture document")
+  if (!fs.existsSync(ARCH_PATH)) {
+    throw new Error("backend-architecture.md missing")
   }
 
-  return fs.readFileSync(BACKEND_ARCH_PATH, "utf8")
+  return fs.readFileSync(ARCH_PATH, "utf8")
+
 }
 
-function extractEntities(architectureText) {
+function parseEntities(text) {
 
   const entities = []
+  const lines = text.split("\n")
 
-  const lines = architectureText.split("\n")
+  let current = null
 
   for (const line of lines) {
 
     if (line.startsWith("Entity:")) {
 
-      const name = line.replace("Entity:", "").trim()
+      if (current) entities.push(current)
 
-      entities.push({
-        name,
-        fields: [
-          { name: "id", type: "SERIAL PRIMARY KEY" },
-          { name: "created_at", type: "TIMESTAMP" }
-        ]
+      current = {
+        name: line.replace("Entity:", "").trim(),
+        fields: []
+      }
+
+    }
+
+    if (line.trim().startsWith("-")) {
+
+      const field = line.replace("-", "").trim()
+      const parts = field.split(" ")
+
+      current.fields.push({
+        name: parts[0],
+        type: parts[1] || "TEXT"
       })
 
     }
 
   }
 
+  if (current) entities.push(current)
+
   return entities
+
 }
 
 function generateSQL(entities) {
@@ -48,6 +60,7 @@ function generateSQL(entities) {
   for (const entity of entities) {
 
     sql += `CREATE TABLE ${entity.name} (\n`
+    sql += `  id SERIAL PRIMARY KEY,\n`
 
     const fields = entity.fields.map(
       f => `  ${f.name} ${f.type}`
@@ -55,71 +68,94 @@ function generateSQL(entities) {
 
     sql += fields.join(",\n")
 
-    sql += "\n);\n\n"
+    sql += `,\n  created_at TIMESTAMP\n`
+
+    sql += ");\n\n"
 
   }
 
   return sql
-}
 
-function ensureDirectories() {
-
-  fs.mkdirSync(OUTPUT_DIR, { recursive: true })
-  fs.mkdirSync(MIGRATION_DIR, { recursive: true })
 }
 
 function writeSchema(sql) {
 
-  fs.writeFileSync(
-    path.join(OUTPUT_DIR, "schema.sql"),
-    sql
-  )
+  fs.writeFileSync("database/schema.sql", sql)
+
 }
 
 function writeMigration(sql) {
 
-  const filePath = path.join(
-    MIGRATION_DIR,
-    "001_initial_schema.sql"
-  )
+  const file = "database/migrations/001_initial_schema.sql"
 
-  fs.writeFileSync(filePath, sql)
+  fs.writeFileSync(file, sql)
+
 }
 
-function writeBuildLog(entityCount) {
+function generateModels(entities) {
+
+  fs.mkdirSync("backend/models", { recursive: true })
+
+  for (const entity of entities) {
+
+    const model = `
+class ${entity.name} {
+
+  constructor(data) {
+    Object.assign(this, data)
+  }
+
+}
+
+export default ${entity.name}
+`
+
+    fs.writeFileSync(
+      `backend/models/${entity.name}.js`,
+      model
+    )
+
+  }
+
+}
+
+function writeBuildLog(count) {
 
   const log = `
-Database Build Completed
+# Database Build Log
 
-Tables Generated: ${entityCount}
-Time: ${new Date().toISOString()}
+Tables Generated: ${count}
+
+Build Time:
+${new Date().toISOString()}
 `
 
   fs.writeFileSync(
     "docs/reference/database-build-log.md",
     log
   )
+
 }
 
 export default async function buildDatabase() {
 
-  console.log("Starting database build")
+  console.log("Building database layer")
 
   const architecture = loadArchitecture()
 
-  const entities = extractEntities(architecture)
+  const entities = parseEntities(architecture)
 
   if (entities.length === 0) {
-    throw new Error("No entities found in backend architecture")
+    throw new Error("No entities detected in backend architecture")
   }
 
   const sql = generateSQL(entities)
 
-  ensureDirectories()
-
   writeSchema(sql)
 
   writeMigration(sql)
+
+  generateModels(entities)
 
   writeBuildLog(entities.length)
 
